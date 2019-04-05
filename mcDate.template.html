@@ -1,0 +1,25 @@
+<div class="mc-dates-component">
+    <div class="mc-dates-component__wrapper">
+        <div layout="row">
+            <div class="mc-dates-component__holder">
+                <label class="datepicker-subtitle">с</label>
+                <md-datepicker ng-model="$ctrl.dateFromMoment" md-placeholder="Первая дата" md-hide-icons="calendar">
+                </md-datepicker>
+            </div>
+            <div class="mc-dates-component__holder">
+                <label class="datepicker-subtitle">по</label>
+                <md-datepicker ng-model="ctrl.myDate" md-placeholder="Вторая дата" md-hide-icons="calendar">
+                </md-datepicker>
+            </div>
+        </div>
+        <div layout="row">
+            <ul class="ui-options-list">
+                <li ng-repeat="option in $ctrl.options" class="ui-options-list__item">
+                    <a ng-click="$ctrl.checkOption(option)" href="">
+                        {{option.title}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

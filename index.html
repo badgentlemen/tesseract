@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tesseract</title>
+</head>
+
+<body>
+    <div ng-app="App" class="wrapper">
+        <div ng-controller="AppController as $ctrl">
+            <div class="row">
+                <input ng-model="$ctrl.dateFrom">
+                <input ng-model="$ctrl.dateTo">
+            </div>
+            <hr>
+            <mc-dates date-from="$ctrl.dateFrom" date-to="$ctrl.dateTo" mc-change="$ctrl.changeDates()"></mc-dates>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+{
+    "name": "tesseract",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.ts",
+    "dependencies": {
+        "angular": "^1.7.8",
+        "angular-animate": "^1.7.8",
+        "angular-aria": "^1.7.8",
+        "angular-material": "^1.1.17",
+        "moment": "^2.24.0"
+    },
+    "devDependencies": {
+        "@types/angular": "^1.6.54",
+        "@types/node": "^11.13.0",
+        "css-loader": "^2.1.1",
+        "html-loader": "^0.5.5",
+        "html-webpack-plugin": "^3.2.0",
+        "node-sass": "^4.11.0",
+        "sass-loader": "^7.1.0",
+        "style-loader": "^0.23.1",
+        "ts-loader": "^5.3.3",
+        "typescript": "^3.4.1",
+        "webpack": "^4.29.6",
+        "webpack-cli": "^3.3.0",
+        "webpack-dev-server": "^3.2.1"
+    },
+    "scripts": {
+        "start": "webpack-dev-server"
+    },
+    "author": "",
+    "license": "ISC"
+}
