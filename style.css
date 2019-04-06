@@ -11,6 +11,10 @@ body, html {
     margin: 40px;
 }
 
+.mc-dates-component__holder {
+    width: 50%;
+}
+
 .mc-dates-component__holder:first-child {
     margin-right: 10px;
 }
