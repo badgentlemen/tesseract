@@ -3,12 +3,12 @@
         <div layout="row">
             <div class="mc-dates-component__holder">
                 <label class="datepicker-subtitle">с</label>
-                <md-datepicker ng-model="$ctrl.dateFromMoment" md-placeholder="Первая дата" md-hide-icons="calendar" ng-required="false" ng-change="dateFromMomentChange()">
+                <md-datepicker ng-model="$ctrl.dateRangerPicker.start" md-placeholder="Первая дата" md-hide-icons="calendar" ng-required="false" ng-change="$ctrl.onDatePickerChanged()" >
                 </md-datepicker>
             </div>
             <div class="mc-dates-component__holder">
                 <label class="datepicker-subtitle">по</label>
-                <md-datepicker ng-model="$ctrl.dateToMoment" md-placeholder="Вторая дата" md-hide-icons="calendar" ng-required="false">
+                <md-datepicker ng-model="$ctrl.dateRangerPicker.end" md-placeholder="Вторая дата" md-hide-icons="calendar" ng-required="false" ng-change="$ctrl.onDatePickerChanged()" >
                 </md-datepicker>
             </div>
         </div>
@@ -22,7 +22,7 @@
             </ul>
         </div>
         <div layout="row">
-            {{$ctrl.dateFromMoment}}
+            {{$ctrl.dateRangerPicker}}
         </div>
     </div>
 </div>

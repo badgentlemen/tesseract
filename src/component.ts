@@ -1,12 +1,19 @@
 import * as moment from 'moment';
 import { IOptionButton } from './types';
-import { buttonOptions, datesByOption } from './hepler';
+import { buttonOptions, datesByOption, uglyDateFormat } from './hepler';
 const template = require('./views/mcDate.template.html');
+
+interface IDateRangePicker {
+    start?: Date | null;
+    startMoment?: moment.Moment | null;
+    end?: Date | null;
+    endMoment?: moment.Moment | null
+}
 
 const mcDatesComponent: ng.IComponentOptions = {
     bindings: {
-        dateFrom: '<',
-        dateTo: '<',
+        dateFrom: '=',
+        dateTo: '=',
         mcChange: '&'
     },
     template: template,
@@ -15,52 +22,69 @@ const mcDatesComponent: ng.IComponentOptions = {
         public mcChange?: () => any;
         public dateFrom: string;
         public dateTo: string;
-        public dateFromMoment: moment.Moment | null = null;
-        public dateToMoment: moment.Moment | null = null;
-        static $inject = ["$scope"];
-        constructor(private $scope: any) {
+        public dateRangerPicker: IDateRangePicker;
+        constructor(private $scope: any, private $timeout: angular.ITimeoutService) {
             this.options = buttonOptions;
+            this.dateRangerPicker = {};
+
         }
 
-        $onChanges = (changes: any) => {
-            if (changes['dateFrom']) {
-                this.dateFromMoment = this.currentValueAsMoment(changes, 'dateFrom');
-            }
+        $onInit() {
+            this.$scope.$watch(() => {
+                return this.dateFrom;
+            }, (newVal: string) => {
+                this.setDateStart(new Date(newVal));
+                this.checkDatesRequirement();
+            });
 
-            if (changes['dateTo']) {
-                this.dateToMoment = this.currentValueAsMoment(changes, 'dateTo');
-            }
-
-            this.checkDatesRequirement();
-        }
-
-        private currentValueAsMoment(changes: any, key: string): moment.Moment | null {
-            if (changes[key] && changes[key].currentValue) {
-                let date = moment(changes[key].currentValue)
-                return date.isValid() ? date : null;
-            }
-            return null
+            this.$scope.$watch(() => {
+                return this.dateTo;
+            }, (newVal: string) => {
+                this.setDateEnd(new Date(newVal));
+            });
         }
 
         private checkOption(option: IOptionButton): void {
-            const lastDateFrom = this.dateFromMoment;
-            const lastDateTo = this.dateToMoment;
             const dates = datesByOption(option);
-            this.dateFromMoment = dates.start;
-            this.dateToMoment = dates.end;
+            this.setDateStart(dates.start);
+            this.setDateEnd(dates.end);
+            this.afterDateModified();
+            this.mcChange && this.mcChange();
+        }
 
-            this.checkDatesRequirement();
+        private setDateStart(start: Date | null) {
+            this.dateRangerPicker.start = start;
+            this.dateRangerPicker.startMoment = start ? moment(start) : null;
+        }
 
-            if ((this.dateToMoment !== lastDateTo || this.dateFromMoment !== lastDateFrom) && this.mcChange) {
-                this.mcChange();
-            }
+        private setDateEnd(end: Date | null) {
+            this.dateRangerPicker.end = end;
+            this.dateRangerPicker.endMoment = end ? moment(end) : null;
         }
 
         private checkDatesRequirement(): void {
-            console.log(this.dateFromMoment)
-            if (this.dateFromMoment && this.dateToMoment) {
-                this.dateFromMoment = this.dateFromMoment.isSameOrBefore(this.dateToMoment) ? this.dateFromMoment : null;
+            if (this.dateRangerPicker.startMoment && this.dateRangerPicker.endMoment) {
+                if (!this.dateRangerPicker.startMoment.isSameOrBefore(this.dateRangerPicker.endMoment, 'days')) {
+                    this.setDateStart(null);
+                    this.setDateEnd(this.dateRangerPicker.endMoment ? this.dateRangerPicker.endMoment.toDate() : moment().toDate())
+                }
             }
+        }
+
+        private afterDateModified() {
+            this.checkDatesRequirement();
+            this.updateParent();
+        }
+
+        private onDatePickerChanged(): void {
+            this.setDateEnd(this.dateRangerPicker.end);
+            this.setDateStart(this.dateRangerPicker.start);
+            this.afterDateModified();
+        }
+
+        private updateParent() {
+            this.dateFrom = this.dateRangerPicker.startMoment && this.dateRangerPicker.startMoment.isValid() ? this.dateRangerPicker.startMoment.format(uglyDateFormat) : '';
+            this.dateTo = this.dateRangerPicker.endMoment && this.dateRangerPicker.endMoment.isValid() ? this.dateRangerPicker.endMoment.format(uglyDateFormat) : '';
         }
     }
 }

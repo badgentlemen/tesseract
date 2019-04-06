@@ -9,14 +9,17 @@
 </head>
 
 <body>
-    <div ng-app="App" class="wrapper">
+    <div ng-app="App" class="wrapper" ng-cloak>
         <div ng-controller="AppController as $ctrl">
-            <div class="row">
-                <input ng-model="$ctrl.dateFrom">
-                <input ng-model="$ctrl.dateTo">
-            </div>
-            <hr>
-            <mc-dates date-from="$ctrl.dateFrom" date-to="$ctrl.dateTo" mc-change="$ctrl.changeDates()"></mc-dates>
+            <mc-dates date-from="$ctrl.date1" date-to="$ctrl.date2" mc-change="$ctrl.changeDates()"></mc-dates>
+            <md-input-container>
+                <label>Дата 1</label>
+                <input ng-model="$ctrl.date1">
+            </md-input-container>
+            <md-input-container>
+                <label>Дата 2</label>
+                <input ng-model="$ctrl.date2">
+            </md-input-container>
         </div>
     </div>
 </body>

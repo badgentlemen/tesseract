@@ -23,9 +23,12 @@ const buttonOptions: IOptionButton[] = [{
     title: 'Все'
 }];
 
+export const dateFormat = 'DD.MM.YYYY';
+export const uglyDateFormat = 'YYYY-MM-DD';
+
 interface IDatesByOption {
-    start: moment.Moment | null;
-    end: moment.Moment | null;
+    start: Date | null;
+    end: Date | null;
 }
 
 const datesByOption = (option: IOptionButton): IDatesByOption => {
@@ -33,24 +36,27 @@ const datesByOption = (option: IOptionButton): IDatesByOption => {
     let end = null;
     switch (option.type) {
         case 'Yesterday':
-            const yesterday = moment().subtract(-1, 'days');
+            const yesterday = moment().subtract(1, 'days').toDate();
             start = yesterday;
             end = yesterday;
             break;
         case 'Today':
-            const today = moment();
+            const today = moment().toDate();
             start = today;
             end = today;
             break;
         case 'T2Week':
-            start = moment().subtract(14, 'days');
-            end = moment();
+            start = moment().subtract(14, 'days').toDate();
+            end = moment().toDate();
             break;
         case 'Month':
-            start = moment().subtract(30, 'days');
-            end = moment();
+            start = moment().subtract(30, 'days').toDate();
+            end = moment().toDate();
+            break;
+        default:
             break;
     }
+
 
     return {
         start,

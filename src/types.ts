@@ -9,6 +9,6 @@ export interface IOptionButton {
 }
 
 export interface momentHolder {
-    dateFrom: moment.Moment,
-    dateTo: moment.Moment
+    dateFrom: Date,
+    dateTo: Date
 }

@@ -7,15 +7,14 @@ import AppController from './src/controller';
 import 'angular-material';
 import 'angular-material/angular-material.scss';
 import './style.css';
-
-const dateFormat = 'DD.MM.YYYY';
+import { dateFormat } from './src/hepler';
 
 const app = angular
 	.module('App', ['ngMaterial'])
 	.config(($mdDateLocaleProvider: any) => {
         $mdDateLocaleProvider.parseDate = (dateString: string) => {
             var m = moment(dateString, dateFormat, true);
-            return m.isValid() ? m.toDate() : null;
+            return m.isValid() ? m.toDate() : '';
         };
 		$mdDateLocaleProvider.formatDate = (date: Date) => {
             const pickerValue = moment(date);
