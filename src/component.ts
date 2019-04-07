@@ -10,6 +10,8 @@ interface IDateRangePicker {
     endMoment?: moment.Moment | null
 }
 
+type IPositionMoment = 'startMoment' | 'endMoment';
+
 const mcDatesComponent: ng.IComponentOptions = {
     bindings: {
         dateFrom: '=',
@@ -19,14 +21,13 @@ const mcDatesComponent: ng.IComponentOptions = {
     template: template,
     controller: class mcDatesComponentController {
         public options: IOptionButton[];
-        public mcChange?: () => any;
+        public mcChange?: () => void;
         public dateFrom: string;
         public dateTo: string;
         public dateRangerPicker: IDateRangePicker;
         constructor(private $scope: any) {
             this.options = buttonOptions;
             this.dateRangerPicker = {};
-
         }
 
         $onInit() {
@@ -80,11 +81,24 @@ const mcDatesComponent: ng.IComponentOptions = {
             this.setDateEnd(this.dateRangerPicker.end);
             this.setDateStart(this.dateRangerPicker.start);
             this.afterDatePickerModified();
+            this.mcChange && this.mcChange();
         }
 
         private updateParent() {
-            this.dateFrom = this.dateRangerPicker.startMoment && this.dateRangerPicker.startMoment.isValid() ? this.dateRangerPicker.startMoment.format(uglyDateFormat) : '';
-            this.dateTo = this.dateRangerPicker.endMoment && this.dateRangerPicker.endMoment.isValid() ? this.dateRangerPicker.endMoment.format(uglyDateFormat) : '';
+            const uglyDateFormats = this.uglyFormatForMomentDates();
+            this.dateFrom = uglyDateFormats.dateFrom;
+            this.dateTo = uglyDateFormats.dateTo;
+        }
+
+        private uglyFormatForMomentPosition(positionMoment: IPositionMoment): string {
+            return this.dateRangerPicker[positionMoment] && this.dateRangerPicker[positionMoment].isValid() ? this.dateRangerPicker[positionMoment].format(uglyDateFormat) : '';
+        }
+
+        private uglyFormatForMomentDates(): { dateFrom: string, dateTo: string } {
+            return {
+                dateFrom: this.uglyFormatForMomentPosition('startMoment'),
+                dateTo: this.uglyFormatForMomentPosition('endMoment')
+            };
         }
     }
 }

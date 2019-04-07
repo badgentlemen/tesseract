@@ -7,8 +7,3 @@ export interface IOptionButton {
     type: IOptionButtonType;
     title?: string;
 }
-
-export interface momentHolder {
-    dateFrom: Date,
-    dateTo: Date
-}
