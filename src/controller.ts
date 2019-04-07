@@ -1,10 +1,8 @@
-import { momentHolder } from './types';
-
 export default class AppController implements angular.IController {
     public date1: string;
     public date2: string;
     public changeDates = () => {
-        console.log('changeDates called in parent');
+        console.log('mc-change called from child');
     }
     static $inject = ['$timeout'];
     constructor(private $timeout: ng.ITimeoutService) {

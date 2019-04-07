@@ -50,7 +50,7 @@ const datesByOption = (option: IOptionButton): IDatesByOption => {
             end = moment().toDate();
             break;
         case 'Month':
-            start = moment().subtract(30, 'days').toDate();
+            start = moment().subtract(1, 'months').toDate();
             end = moment().toDate();
             break;
         default:

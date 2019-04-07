@@ -1,29 +1,27 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     mode: "development",
-    devtool: "inline-source-map",
+    devtool: "source-map",
     entry: "./app.ts",
     output: {
         filename: "bundle.js"
     },
     optimization: {
-        runtimeChunk: 'single',
         splitChunks: {
-            cacheGroups: {
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name: 'vendors',
-                    enforce: true,
-                    chunks: 'all'
-                }
-            }
+            chunks: 'all'
         }
     },
-    plugins: [new HtmlWebpackPlugin({
-        inject: true,
-        template: 'index.html'
-    })],
+    plugins: [
+        new HtmlWebpackPlugin({
+            inject: true,
+            template: 'index.html'
+        }),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new BundleAnalyzerPlugin()
+    ],
     resolve: {
         extensions: [".ts", ".tsx", ".js"]
     },

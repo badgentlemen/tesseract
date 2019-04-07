@@ -9,17 +9,19 @@ import 'angular-material/angular-material.scss';
 import './style.css';
 import { dateFormat } from './src/hepler';
 
-const app = angular
-	.module('App', ['ngMaterial'])
-	.config(($mdDateLocaleProvider: any) => {
+angular
+    .module('App', ['ngMaterial'])
+    .config(($mdDateLocaleProvider: any) => {
         $mdDateLocaleProvider.parseDate = (dateString: string) => {
             var m = moment(dateString, dateFormat, true);
             return m.isValid() ? m.toDate() : '';
         };
-		$mdDateLocaleProvider.formatDate = (date: Date) => {
+        $mdDateLocaleProvider.formatDate = (date: Date) => {
             const pickerValue = moment(date);
-			return pickerValue.isValid() ? pickerValue.format(dateFormat) : '';
-		};
-	})
-	.component('mcDates', mcDatesComponent)
-	.controller('AppController', AppController);
+            return pickerValue.isValid() ? pickerValue.format(dateFormat) : '';
+        };
+    })
+    .component('mcDates', mcDatesComponent)
+    .controller('AppController', AppController);
+
+angular.bootstrap(document, ["App"]);

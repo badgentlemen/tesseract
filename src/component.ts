@@ -23,7 +23,7 @@ const mcDatesComponent: ng.IComponentOptions = {
         public dateFrom: string;
         public dateTo: string;
         public dateRangerPicker: IDateRangePicker;
-        constructor(private $scope: any, private $timeout: angular.ITimeoutService) {
+        constructor(private $scope: any) {
             this.options = buttonOptions;
             this.dateRangerPicker = {};
 
@@ -33,14 +33,14 @@ const mcDatesComponent: ng.IComponentOptions = {
             this.$scope.$watch(() => {
                 return this.dateFrom;
             }, (newVal: string) => {
-                this.setDateStart(new Date(newVal));
+                this.setDateStart(newVal.length ? new Date(newVal) : null);
                 this.checkDatesRequirement();
             });
 
             this.$scope.$watch(() => {
                 return this.dateTo;
             }, (newVal: string) => {
-                this.setDateEnd(new Date(newVal));
+                this.setDateEnd(newVal.length ? new Date(newVal) : null);
             });
         }
 
@@ -48,7 +48,7 @@ const mcDatesComponent: ng.IComponentOptions = {
             const dates = datesByOption(option);
             this.setDateStart(dates.start);
             this.setDateEnd(dates.end);
-            this.afterDateModified();
+            this.updateParent();
             this.mcChange && this.mcChange();
         }
 
@@ -71,7 +71,7 @@ const mcDatesComponent: ng.IComponentOptions = {
             }
         }
 
-        private afterDateModified() {
+        private afterDatePickerModified() {
             this.checkDatesRequirement();
             this.updateParent();
         }
@@ -79,7 +79,7 @@ const mcDatesComponent: ng.IComponentOptions = {
         private onDatePickerChanged(): void {
             this.setDateEnd(this.dateRangerPicker.end);
             this.setDateStart(this.dateRangerPicker.start);
-            this.afterDateModified();
+            this.afterDatePickerModified();
         }
 
         private updateParent() {
